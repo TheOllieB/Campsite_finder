@@ -1,11 +1,18 @@
 <% include partials/header %>
-<h1>This is the Campsite Page</h1>
+<div class="container">
+    <header class="jumbotron">
+        <h1>Welcome to CampsiteFinder!</h1>
+        <p>View our hand-picked campsites from all over the world!</p>
+        <p><a class="btn btn-primary btn-lg" href="/campsites/new">Add a new Campsite</a></p>
+    </header>
 
-<% campsites.forEach(function(campsite){ %>
-    <div> 
-        <h4><%= campsite.name %></h4>
-        <img src="<%= campsite.image %>">
-    </div>
-<% }); %>
+    
 
+    <% campsites.forEach(function(campsite){ %>
+        <div> 
+            <h4><%= campsite.name %></h4>
+            <img src="<%= campsite.image %>">
+        </div>
+    <% }); %>
+</div>
 <% include partials/footer %>
