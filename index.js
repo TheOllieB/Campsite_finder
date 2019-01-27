@@ -1,11 +1,34 @@
 const express    = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const app = express();
 
 const port = 3000;
+mongoose.connect('mongodb://localhost/campsites', { useNewUrlParser: true });
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+
+//Schema Setup
+var campsiteSchema = new mongoose.Schema({
+    name: String,
+    image: String
+});
+
+var Campsite =  mongoose.model('Campsite', campsiteSchema);
+
+Campsite.create(
+    {
+        name: "Salmon Creek", 
+        image: "https://via.placeholder.com/150"
+    }, function(err, campsite){
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("NEWLY CREATED CAMPSITE!");
+            console.log(campsite);
+        }
+    });
 
 var campsites = [
     {name: "Salmon Creek", image: "https://via.placeholder.com/150"},
