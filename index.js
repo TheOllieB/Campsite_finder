@@ -12,49 +12,70 @@ app.use(bodyParser.urlencoded({extended: true}));
 //Schema Setup
 var campsiteSchema = new mongoose.Schema({
     name: String,
-    image: String
+    image: String,
+    description: String
 });
 
 var Campsite =  mongoose.model('Campsite', campsiteSchema);
 
-Campsite.create(
-    {
-        name: "Salmon Creek", 
-        image: "https://via.placeholder.com/150"
-    }, function(err, campsite){
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("NEWLY CREATED CAMPSITE!");
-            console.log(campsite);
-        }
-    });
-
-var campsites = [
-    {name: "Salmon Creek", image: "https://via.placeholder.com/150"},
-    {name: "Granite Hill", image: "https://via.placeholder.com/150"},
-    {name: "Mountain Goats Rest", image: "https://via.placeholder.com/150"}
-]
+// Campsite.create(
+//     {
+//         name: "Granite Hill", 
+//         image: "https://via.placeholder.com/150",
+//         description: "This is a huge granite hill, no bathrooms, no water. Beautiful granite!"
+//     }, function(err, campsite){
+//         if (err) {
+//             console.log(err);
+//         } else {
+//             console.log("NEWLY CREATED CAMPSITE!");
+//             console.log(campsite);
+//         }
+//     });
 
 app.get('/', function(req,res){
     res.render('landing');
 });
 
 app.get('/campsites', function(req, res){
+    Campsite.find({}, function(err, allCampsites){
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("campsites", {campsites: allCampsites});            
+        }
+    })
 
-    res.render("campsites", {campsites: campsites});
 });
 
-app.get("/campsites/new", function(req,res){
-    res.render("new");
+app.get('/campsites/new', function(req,res){
+    res.render('new');
+});
+
+app.get('/campsites/:id', function(req, res){
+    Campsite.findById(req.params.id, function(err, foundCampsite){
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('show', {campsite: foundCampsite}); 
+        }
+    });
+
 });
 
 app.post("/campsites", function(req,res){
     var name = req.body.name;
     var image = req.body.image;
-    var newCampsite = {name: name, image: image};
-    campsites.push(newCampsite);
-    res.redirect("/campsites");
+    var description = req.body.description;
+    var newCampsite = {name: name, image: image, description:description};
+    //Create a new campsite and save to database
+    Campsite.create(newCampsite, function(err, newlyCreated){
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/campsites");            
+        }
+    })
+
 });
 
  app.listen(port, () => console.log(`App is listening on port ${port}!`));

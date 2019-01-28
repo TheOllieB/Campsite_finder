@@ -1,31 +1,33 @@
 <% include partials/header %>
-
-<div class="container">
-    <header class="jumbotron">
-        <div class="container">
-            <h1>Welcome to CampsiteFinder!</h1>
-            <p>View our hand-picked campsites from all over the world!</p>
-            <p>
-                <a class="btn btn-primary btn-lg" href="/campsites/new">Add a new Campsite</a>
-            </p>
-        </div>
-    </header>
-    <div class="row">
-        <div class="colo-lg-12">
-            <h3>Our Most Popular Campsites</h3>
-        </div>
-    </div>
-    <div class="row text-center">
-        <% campsites.forEach(function(campsite){ %>
-            <div class="col-md-3 col-sm-6"> 
-                <div class="thumbnail">
-                    <img src="<%= campsite.image %>">
-                </div>
-                <div class="caption">
-                    <h4><%= campsite.name %></h4>
-                </div>
+    <div class="container">
+        <header class="jumbotron">
+            <div class="container">
+                <h1>Welcome to CampsiteFinder!</h1>
+                <p>View our hand-picked campsites from all over the world!</p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="/campsites/new">Add a new Campsite</a>
+                </p>
             </div>
-        <% }); %>
+        </header>
+        <div class="row">
+            <div class="colo-lg-12">
+                <h3>Our Most Popular Campsites</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <% campsites.forEach(function(campsite){ %>
+                <div class="col-md-3 col-sm-6"> 
+                    <div class="thumbnail">
+                        <img src="<%= campsite.image %>">
+                        <div class="caption">
+                            <h4><%= campsite.name %></h4>
+                        </div>
+                        <p>
+                            <a href="/campsites/<%= campsite._id %>" class="btn btn-primary">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
     </div>
-</div>
 <% include partials/footer %>
