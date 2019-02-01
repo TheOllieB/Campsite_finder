@@ -1,7 +1,9 @@
-const express    = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const app = express();
+const express    = require('express'),
+      bodyParser = require('body-parser'),
+      mongoose   = require('mongoose'),
+      Campsite   = require('./models/campsite'),
+      app        = express(),
+      seedDB     = require('./seeds')
 
 const port = 3000;
 mongoose.connect('mongodb://localhost/campsites', { useNewUrlParser: true });
@@ -9,15 +11,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-//Schema Setup
-var campsiteSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-var Campsite =  mongoose.model('Campsite', campsiteSchema);
-
+seedDB();
 // Campsite.create(
 //     {
 //         name: "Granite Hill", 
