@@ -3,7 +3,8 @@ const express    = require('express'),
       mongoose   = require('mongoose'),
       Campsite   = require('./models/campsite'),
       app        = express(),
-      seedDB     = require('./seeds')
+      seedDB     = require('./seeds'),
+      Comment    = require('./models/comment')
 
 const port = 3000;
 mongoose.connect('mongodb://localhost/campsites', { useNewUrlParser: true });
@@ -85,6 +86,24 @@ app.get('/campsites/:id/comments/new', function(req,res){
         }
     });
 
+});
+
+app.post('/campsites/:id/comments', function(req, res){
+    Campsite.findById(req.params.id , function(err, campsite){
+        if (err) {
+            console.log(err);
+        } else {
+            Comment.create(req.body.comment, function(err, comment){
+                if (err) {
+                    console.log(err);
+                } else {
+                    campsite.comments.push(comment);
+                    campsite.save();
+                    res.redirect(`/campsites/${campsite._id}`);
+                }
+            });
+        }
+    });
 });
 
  app.listen(port, () => console.log(`App is listening on port ${port}!`));
