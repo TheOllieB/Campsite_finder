@@ -4,13 +4,31 @@ const express    = require('express'),
       Campsite   = require('./models/campsite'),
       app        = express(),
       seedDB     = require('./seeds'),
-      Comment    = require('./models/comment')
+      Comment    = require('./models/comment'),
+      passport   = require('passport'),
+      LocalStrategy = require('passport-local'),
+      User       = require('./models/user')
+
 
 const port = 3000;
 mongoose.connect('mongodb://localhost/campsites', { useNewUrlParser: true });
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname + '/public'));
+
+//Passport Config
+app.use(require('express-session')({
+    secret: 'Oliver Burge',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //seedDB();
 // Campsite.create(
@@ -70,7 +88,6 @@ app.post("/campsites", function(req,res){
             res.redirect("/campsites");            
         }
     })
-
 });
 
 //===================
@@ -103,6 +120,27 @@ app.post('/campsites/:id/comments', function(req, res){
                 }
             });
         }
+    });
+});
+
+//=================
+//AUTH ROUTES
+//=================
+
+app.get('/register', function(req,res){
+    res.render('register');
+});
+
+app.post('/register', function(req,res){
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if (err) {
+            console.log(err);
+            return res.render('register');
+        }
+        passport.authenticate('local')(req, res, function(){
+            res.redirect('/campsites');
+        })
     });
 });
 
