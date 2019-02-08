@@ -94,7 +94,7 @@ app.post("/campsites", function(req,res){
 // COMMENT ROUTES
 //===================
 
-app.get('/campsites/:id/comments/new', function(req,res){
+app.get('/campsites/:id/comments/new', isLoggedIn, function(req,res){
     Campsite.findById(req.params.id, function(err, campsite){
         if (err) {
             console.log(err);
@@ -105,7 +105,7 @@ app.get('/campsites/:id/comments/new', function(req,res){
 
 });
 
-app.post('/campsites/:id/comments', function(req, res){
+app.post('/campsites/:id/comments', isLoggedIn, function(req, res){
     Campsite.findById(req.params.id , function(err, campsite){
         if (err) {
             console.log(err);
@@ -143,5 +143,31 @@ app.post('/register', function(req,res){
         })
     });
 });
+
+//show login form
+app.get('/login', function(req, res){
+    res.render('/login');
+});
+
+//handling login logic
+app.post('/login', passport.authenticat('local', 
+    {
+        successRedirect: '/campsites',
+        failureRedirect: '/login'
+    }), function(req, res){
+
+});
+
+app.get('/logout', function(req,res){
+    req.logout();
+    res.redirect('/campsites');
+});
+
+function isLoggedIn(req,res,next){
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
  app.listen(port, () => console.log(`App is listening on port ${port}!`));
