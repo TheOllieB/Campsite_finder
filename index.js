@@ -30,6 +30,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+});
+
 //seedDB();
 // Campsite.create(
 //     {
@@ -146,11 +151,11 @@ app.post('/register', function(req,res){
 
 //show login form
 app.get('/login', function(req, res){
-    res.render('/login');
+    res.render('login');
 });
 
 //handling login logic
-app.post('/login', passport.authenticat('local', 
+app.post('/login', passport.authenticate('local', 
     {
         successRedirect: '/campsites',
         failureRedirect: '/login'
