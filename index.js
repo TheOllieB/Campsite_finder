@@ -43,7 +43,7 @@ app.use(authRoutes);
 app.use('/campsites', campsiteRoutes);
 app.use('/campsites/:id/comments', commentRoutes);
 
-//seedDB();
+// seedDB();
 // Campsite.create(
 //     {
 //         name: "Granite Hill", 
