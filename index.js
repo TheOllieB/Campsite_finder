@@ -6,6 +6,7 @@ const express    = require('express'),
       seedDB     = require('./seeds'),
       Comment    = require('./models/comment'),
       passport   = require('passport'),
+      methodOverride = require('method-override'),
       LocalStrategy = require('passport-local'),
       User       = require('./models/user')
 
@@ -20,6 +21,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'));
 
 //Passport Config
 app.use(require('express-session')({
