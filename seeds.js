@@ -23,40 +23,40 @@ var data = [
 function seedDB(){
    //Remove all campgrounds
    Campsite.remove({}, function(err){
-        if(err){
-            console.log(err);
-        }
-        console.log("removed campsites!");
-        Comment.remove({}, function(err) {
-            if(err){
-                console.log(err);
-            }
-            console.log("removed comments!");
-             //add a few campgrounds
-            data.forEach(function(seed){
-                Campsite.create(seed, function(err, campsite){
-                    if(err){
-                        console.log(err)
-                    } else {
-                        console.log("added a campsite!");
-                        //create a comment
-                        Comment.create(
-                            {
-                                text: "This place is great, but I wish there was BT Sport!",
-                                author: "Harry"
-                            }, function(err, comment){
-                                if(err){
-                                    console.log(err);
-                                } else {
-                                    campsite.comments.push(comment);
-                                    campsite.save();
-                                    console.log("Created new comment");
-                                }
-                            });
-                    }
-                });
-            });
-        });
+        // if(err){
+        //     console.log(err);
+        // }
+        // console.log("removed campsites!");
+        // Comment.remove({}, function(err) {
+        //     if(err){
+        //         console.log(err);
+        //     }
+        //     console.log("removed comments!");
+        //      //add a few campgrounds
+        //     data.forEach(function(seed){
+        //         Campsite.create(seed, function(err, campsite){
+        //             if(err){
+        //                 console.log(err)
+        //             } else {
+        //                 console.log("added a campsite!");
+        //                 //create a comment
+        //                 Comment.create(
+        //                     {
+        //                         text: "This place is great, but I wish there was BT Sport!",
+        //                         author: "Harry"
+        //                     }, function(err, comment){
+        //                         if(err){
+        //                             console.log(err);
+        //                         } else {
+        //                             campsite.comments.push(comment);
+        //                             campsite.save();
+        //                             console.log("Created new comment");
+        //                         }
+        //                     });
+        //             }
+        //         });
+        //     });
+        // });
     }); 
 }
  
