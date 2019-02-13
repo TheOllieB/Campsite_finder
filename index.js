@@ -1,14 +1,15 @@
-const express    = require('express'),
-      bodyParser = require('body-parser'),
-      mongoose   = require('mongoose'),
-      Campsite   = require('./models/campsite'),
-      app        = express(),
-      seedDB     = require('./seeds'),
-      Comment    = require('./models/comment'),
-      passport   = require('passport'),
+const express       = require('express'),
+      bodyParser    = require('body-parser'),
+      mongoose      = require('mongoose'),
+      Campsite      = require('./models/campsite'),
+      app           = express(),
+      seedDB        = require('./seeds'),
+      Comment       = require('./models/comment'),
+      passport      = require('passport'),
       methodOverride = require('method-override'),
       LocalStrategy = require('passport-local'),
-      User       = require('./models/user')
+      User          = require('./models/user'),
+      flash         = require('connect-flash')
 
 //requiring routes
 const commentRoutes  = require('./routes/comments'),
@@ -22,7 +23,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
-
+app.use(flash());
 //Passport Config
 app.use(require('express-session')({
     secret: 'Oliver Burge',
@@ -38,6 +39,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
     next();
 });
 
