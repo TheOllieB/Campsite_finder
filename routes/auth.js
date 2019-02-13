@@ -19,9 +19,10 @@ router.post('/register', function(req,res){
     User.register(newUser, req.body.password, function(err, user){
         if (err) {
             console.log(err);
-            return res.render('register');
+            return res.render('register',  {"error": err.message});
         }
         passport.authenticate('local')(req, res, function(){
+            req.flash('success', `Welcome to CampsiteFinder ${user.username}`);
             res.redirect('/campsites');
         })
     });
