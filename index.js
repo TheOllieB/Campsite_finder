@@ -1,15 +1,15 @@
-const express       = require('express'),
-      bodyParser    = require('body-parser'),
-      mongoose      = require('mongoose'),
-      Campsite      = require('./models/campsite'),
-      app           = express(),
-      seedDB        = require('./seeds'),
-      Comment       = require('./models/comment'),
-      passport      = require('passport'),
+const express        = require('express'),
+      bodyParser     = require('body-parser'),
+      mongoose       = require('mongoose'),
+      Campsite       = require('./models/campsite'),
+      app            = express(),
+      seedDB         = require('./seeds'),
+      Comment        = require('./models/comment'),
+      passport       = require('passport'),
       methodOverride = require('method-override'),
-      LocalStrategy = require('passport-local'),
-      User          = require('./models/user'),
-      flash         = require('connect-flash')
+      LocalStrategy  = require('passport-local'),
+      User           = require('./models/user'),
+      flash          = require('connect-flash')
 
 //requiring routes
 const commentRoutes  = require('./routes/comments'),
